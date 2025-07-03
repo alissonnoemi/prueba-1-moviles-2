@@ -26,9 +26,7 @@ export default function Screen1() {
     setcategoria("");
     setdescripcion("");
 
-    Alert.alert("Éxito", "Auto registrado correctamente");
-    console.log("Documento guardado exitosamente");
-
+    Alert.alert( "Auto registrado correctamente");
   }
   return (
     <View style={styles.container}>
