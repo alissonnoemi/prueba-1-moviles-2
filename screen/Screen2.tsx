@@ -6,34 +6,25 @@ import Informacion from '../components/Informacion'
 
 export default function Screen2() {
   const [idBuscar, setIdBuscar] = useState("")
-  const [autoEncontrado, setAutoEncontrado] = useState(null as any)
   const [listaAutos, setListaAutos] = useState([] as any[])
-  const [cargando, setCargando] = useState(false)
 
-  //buscae id
+  //buscar id
   async function buscarPorId() {
-    setCargando(true);
-      const docRef = doc(db, "autos", idBuscar);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setAutoEncontrado({
-          id: docSnap.id,
-          nombre: data.name,
-          monto: data.monto,
-          categoria: data.categoria,
-          descripcion: data.descripcion
-        });
-      } else {
-        setAutoEncontrado(null);
-        Alert.alert("No encontrado", "No existe un auto con ese ID");
-      }
-    setCargando(false);
+    const docRef = doc(db, "autos", idBuscar);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      Alert.alert(
+        "Auto Encontrado",
+        `ID: ${docSnap.id}\nNombre: ${data.name}\nMonto: $${data.monto}\nCategoría: ${data.categoria}\nDescripción: ${data.descripcion}`
+      );
+    } else {
+      Alert.alert("No existe un auto con ese ID");
+    }
   }
 
   //carga autos
   async function cargarTodosLosAutos() {
-    setCargando(true);
     const querySnapshot = await getDocs(collection(db, "autos"));
     const autos: any[] = [];
     
@@ -49,7 +40,6 @@ export default function Screen2() {
     });
     
     setListaAutos(autos);
-    setCargando(false);
   }
 
   useEffect(() => {
@@ -76,17 +66,6 @@ export default function Screen2() {
             color="#F8BBD9"
           />
         </View>
-
-        {autoEncontrado && (
-          <View style={styles.resultadoBusqueda}>
-            <Text style={styles.tituloResultado}>Auto Encontrado:</Text>
-            <Text style={styles.textoResultado}>ID: {autoEncontrado.id}</Text>
-            <Text style={styles.textoResultado}>Nombre: {autoEncontrado.nombre}</Text>
-            <Text style={styles.textoResultado}>Monto: ${autoEncontrado.monto}</Text>
-            <Text style={styles.textoResultado}>Categoría: {autoEncontrado.categoria}</Text>
-            <Text style={styles.textoResultado}>Descripción: {autoEncontrado.descripcion}</Text>
-          </View>
-        )}
       </View>
 
 
