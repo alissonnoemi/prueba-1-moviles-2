@@ -1,5 +1,6 @@
-import { FlatList, StyleSheet, Text, View, Image, Alert, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { TarjetaSerie } from '../components/TarjetaApi'
 
 export default function Screen4() {
   const [datos, setDatos] = useState([] as any[])
@@ -23,26 +24,8 @@ export default function Screen4() {
       <FlatList
         data={datos}
         renderItem={function({ item }) {
-          return (
-            <TouchableOpacity style={styles.itemContainer} onPress={function() {
-              Alert.alert(
-                item.titulo,
-                `Año: ${item.anio}\nTemporadas: ${item.metadata.temporadas}\nCreador: ${item.metadata.creador}\n\n${item.descripcion}`
-              )
-            }}>
-              <Image 
-                source={{ uri: item.info.imagen }} 
-                style={styles.imagen}
-              />
-              <View style={styles.infoContainer}>
-                <Text style={styles.titulo}>{item.titulo}</Text>
-                <Text style={styles.temporadas}>Temporadas: {item.metadata.temporadas}</Text>
-                <Text style={styles.creador}>{item.metadata.creador}</Text>
-              </View>
-            </TouchableOpacity>
-          )
+          return <TarjetaSerie informacion={item} />
         }}
-        keyExtractor={function(_, index) { return index.toString() }}
       />
     </View>
   )
@@ -98,13 +81,13 @@ const styles = StyleSheet.create({
   },
   temporadas: {
     fontSize: 14,
-    color: '#F8BBD9',
+    color: 'black',
     fontWeight: '600',
     marginBottom: 4,
   },
   creador: {
     fontSize: 12,
-    color: '#999',
+    color: 'black',
     fontStyle: 'italic',
   },
   sectionHeader: {
